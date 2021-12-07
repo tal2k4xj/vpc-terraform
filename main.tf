@@ -12,9 +12,22 @@ provider "ibm" {
   region = "eu-de"
 }
 
+# Define region to deploy
+locals {
+  ZONE = "eu-de1"
+}
+
 # Create a VPC
 resource "ibm_is_vpc" "vpc" {
   name = "mytalnevpc1"
+}
+
+# Create subnets
+resource "ibm_is_subnet" "subnet1" {
+  name                     = "subnet-talne"
+  vpc                      = ibm_is_vpc.vpc.id
+  zone                     = local.ZONE
+  total_ipv4_address_count = 256
 }
 
 # Create security group
